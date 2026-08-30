@@ -1,0 +1,171 @@
+@import 'tailwindcss';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+
+@theme {
+    --color-background: #020617;
+    --color-surface: #0f172a;
+    --color-card: #111c30;
+
+    --color-primary-text: #f8fafc;
+    --color-secondary-text: #94a3b8;
+
+    --color-accent: #5eead4;
+    --color-border: rgb(148 163 184 / .12);
+
+    --font-sans: "Inter", system-ui, sans-serif;
+}
+
+* {
+    scroll-behavior: smooth;
+}
+
+.admin-card {
+    transition: all .2s ease;
+}
+
+.admin-card:hover {
+    border-color: var(--color-accent);
+    background-color: color-mix(in srgb, var(--color-accent) 3%, transparent);
+}
+
+.input-focus:focus-within {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 15%, transparent);
+}
+
+.btn-accent {
+    transition: .15s;
+}
+
+.btn-accent:hover {
+    background: var(--color-accent);
+    color: var(--color-background);
+}
+
+.repeater-item {
+    border-left: 2px solid transparent;
+    transition: .2s;
+}
+
+.repeater-item:hover {
+    border-left-color: var(--color-accent);
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+.badge-pill {
+    background: color-mix(in srgb, white 4%, transparent);
+    border: 1px solid var(--color-border);
+    border-radius: 9999px;
+    padding: .2rem .8rem;
+    font-size: .7rem;
+    color: var(--color-secondary-text);
+    transition: .15s;
+}
+
+.badge-pill:hover {
+    background: var(--color-accent);
+    color: var(--color-background);
+    border-color: var(--color-accent);
+}
+
+
+
+
+/* From Uiverse.io by alexruix */
+.card {
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    background: var(--color-card);
+    border: 1px solid var(--color-border);
+    color: var(--color-primary-text);
+    border-radius: .75rem;
+}
+
+/* Inputs */
+.field {
+    margin-top: .5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5em;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: .5rem;
+    padding: .75em 1em;
+    transition: .2s;
+}
+
+.field:focus-within {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-accent) 20%, transparent);
+}
+
+.input-icon {
+    width: 1rem;
+    height: 1rem;
+    fill: var(--color-accent);
+}
+
+.input-field {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: var(--color-primary-text);
+}
+
+.input-field::placeholder {
+    color: var(--color-secondary-text);
+}
+
+.field input:focus::placeholder {
+    opacity: 0;
+    transition: opacity .3s;
+}
+
+/* Text */
+.title {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-primary-text);
+}
+
+/* Buttons */
+.btn {
+    margin: 1rem;
+    border: none;
+    border-radius: .5rem;
+    font-weight: 600;
+    font-size: .875rem;
+    padding: .75rem 1.25rem;
+    cursor: pointer;
+    background: var(--color-accent);
+    color: var(--color-background);
+    transition: .2s;
+    box-shadow: 0 8px 24px color-mix(in srgb, var(--color-accent) 25%, transparent);
+}
+
+.btn:hover {
+    opacity: .9;
+    transform: translateY(-1px);
+}
+
+.btn-link {
+    display: block;
+    color: var(--color-secondary-text);
+    font-size: .8rem;
+    transition: .2s;
+}
+
+.btn-link:hover {
+    color: var(--color-accent);
+}

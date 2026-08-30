@@ -1,0 +1,26 @@
+<section id="contact" class="section-anchor min-h-[calc(100vh-4rem)]">
+    <h2 class="text-2xl font-bold tracking-tight mb-4 flex items-center gap-3">
+        <span class="text-accent text-2xl">/</span> Contact
+    </h2>
+    <div class="bg-card/50 border border-border rounded-2xl p-8 max-w-2xl">
+        <h3 class="text-2xl font-bold tracking-tight">{{ $contacts['contact_title'] }}</h3>
+        <p class="text-secondary-text text-sm leading-relaxed mt-2 max-w-lg">
+            {{ $contacts['contact_description'] }}
+        </p>
+        <a href="mailto:{{ $contacts['email']['url'] }}"
+            class="inline-block mt-5 bg-accent/20 hover:bg-accent/30 text-accent font-medium px-6 py-2.5 rounded-full border border-accent/20 transition-all text-sm">
+            Say Hello
+        </a>
+        <div class="flex gap-5 mt-6 text-sm text-secondary-text">
+
+            @forelse ($contacts['platforms'] as $contactItem)
+                <a href="{{ $contactItem['url'] }}" target="_blank" class="hover:text-accent transition-colors">
+                    <i class="{{ $contactItem['icon'] }}"></i>
+                    {{ $contactItem['platform'] }}
+                </a>
+            @empty
+                <span class="text-secondary-text">No contact data available.</span>
+            @endforelse
+        </div>
+    </div>
+</section>
