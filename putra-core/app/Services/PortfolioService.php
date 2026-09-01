@@ -15,7 +15,7 @@ class PortfolioService
 {
     public function getPortfolioData(): array
     {
-        $user = User::with('heroData', 'projects', 'certificateData')->first();
+        $user = User::with('heroData', 'projectData', 'certificateData')->first();
         return [
             'hero' => [
                 'id' => $user->heroData->id,
@@ -31,15 +31,18 @@ class PortfolioService
                 'role_description_en' => $user->heroData->role_description_en,
                 'hero_buttons' => HeroButton::select('id', 'label_id', 'label_en', 'url', 'action')->get()->toArray(),
             ],
-            'projects' => $user->projects->map(function ($project) {
+            'projects' => $user->projectData->map(function ($project) {
                 return [
                     'id' => $project->id,
                     'title_id' => $project->title_id,
                     'title_en' => $project->title_en,
+                    'start_date' => $project->start_date,
+                    'completed_at' => $project->completed_at,
                     'created_at' => $project->created_at,
                     'introduction_id' => $project->introduction_id,
                     'introduction_en' => $project->introduction_en,
                     'demo' => $project->demo,
+                    'image' => $project->image,
                     'source_code' => $project->source_code,
                     'technologies' => $project->projectDetails?->map(function ($detail) {
                         return [
@@ -83,7 +86,7 @@ class PortfolioService
                 'contact_description_id' => $user->contactData->contact_description_id,
                 'contact_description_en' => $user->contactData->contact_description_en,
 
-                'platform' => $user->contactData->contactDetail->map(function ($detail) {
+                'platform' => $user->contactData->contactDetails->map(function ($detail) {
                     return [
                         'id' => $detail->id,
                         'platform' => $detail->platform,
@@ -93,7 +96,7 @@ class PortfolioService
                     ];
                 })->toArray(),
             ],
-            'certificates' => $user->certificateData->map(function ($certificate) {
+            'certificates' => $user->certificateData->sortByDesc('issued_date')->map(function ($certificate) {
                 return [
                     'id' => $certificate->id,
                     'title_id' => $certificate->title_id,
@@ -119,6 +122,31 @@ class PortfolioService
                     })->toArray(),
                 ];
             }),
+            'educations' => $user->educationData->map(function ($education) {
+                return [
+                    'id' => $education->id,
+                    'institution_id' => $education->institution_id,
+                    'institution_en' => $education->institution_en,
+                    'degree' => $education->degree,
+                    'field_of_study_id' => $education->field_of_study_id,
+                    'field_of_study_en' => $education->field_of_study_en,
+                    'location' => $education->location,
+                    'final_grade' => $education->final_grade,
+                    'start_date' => $education->start_date,
+                    'end_date' => $education->end_date,
+                    'description_id' => $education->description_id,
+                    'description_en' => $education->description_en,
+                    'image' => $education->image,
+                    'technologies' => $education->educationDetails->map(function ($technology) {
+                        return [
+                            'id' => $technology->id,
+                            'category' => $technology->category->name,
+                            'technology' => $technology->technology->name,
+                            'icon' => $technology->technology->icon,
+                        ];
+                    })
+                ];
+            })
         ];
     }
 }

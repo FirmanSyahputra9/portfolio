@@ -16,13 +16,23 @@ class Portofolio extends Component
     public $experiences = [];
     public $contacts = [];
     public $certificates = [];
+    public $educations = [];
 
+    public $showAllCertificates = false;
+    public $showAllEducations = false;
+    public $showAllExperiences = false;
 
-    
 
     public function mount(PortfolioService $portfolio)
     {
+        app()->setLocale(session('locale', 'en'));
+        $this->loadPortfolio($portfolio);
+    }
+
+    private function loadPortfolio(PortfolioService $portfolio)
+    {
         $data = $portfolio->getPortfolio();
+
         $this->hero = $data['hero'] ?? [];
         $this->featuredProject = $data['featuredProject'] ?? [];
         $this->projects = $data['projects'] ?? [];
@@ -32,10 +42,35 @@ class Portofolio extends Component
         $this->experiences = $data['experiences'] ?? [];
         $this->contacts = $data['contacts'] ?? [];
         $this->certificates = $data['certificates'] ?? [];
-        // dd($this->certificates);
+        $this->educations = $data['educations'] ?? [];
+    }
 
-        // dd($this->contact);
+    public function toggleCertificates()
+    {
+        $this->showAllCertificates = !$this->showAllCertificates;
+    }
 
+
+    public function toggleEducations()
+    {
+        $this->showAllEducations = !$this->showAllEducations;
+    }
+
+    public function toggleExperiences()
+    {
+        $this->showAllExperiences = !$this->showAllExperiences;
+    }
+
+    public function changeLanguage($locale)
+    {
+        if (! in_array($locale, ['id', 'en'])) {
+            return;
+        }
+
+        session(['locale' => $locale]);
+
+        app()->setLocale($locale);
+        $this->loadPortfolio(app(PortfolioService::class));
     }
 
     public function render()

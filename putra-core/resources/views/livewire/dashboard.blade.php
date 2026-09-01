@@ -13,15 +13,18 @@
 
     <x-section.hero />
 
+    <x-section.about />
+
     <x-section.certificate />
 
-    <x-section.about />
 
     <x-section.experience />
 
-    <x-section.projects />
+    <x-section.education />
 
-    <x-section.skills />
+    <x-section.project />
+
+    <x-section.skill />
 
     <x-section.contact />
 

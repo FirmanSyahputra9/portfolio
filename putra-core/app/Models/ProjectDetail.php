@@ -17,9 +17,9 @@ class ProjectDetail extends Model
         'technology_id',
     ];
 
-    public function project()
+    public function projectData()
     {
-        return $this->belongsTo(Project::class);
+        return $this->belongsTo(ProjectData::class);
     }
 
     public function category()
@@ -32,9 +32,4 @@ class ProjectDetail extends Model
         return $this->belongsTo(Technology::class);
     }
 
-
-    public function projectDetails()
-    {
-        return $this->belongsToMany(ProjectDetail::class);
-    }
 }

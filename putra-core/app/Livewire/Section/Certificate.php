@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Storage;
 
 class Certificate extends Component
 {
@@ -206,7 +207,10 @@ class Certificate extends Component
         if (!isset($this->tempPhotos[$index])) {
             return;
         }
+
         $certificate = $this->certificates[$index];
+
+        $oldPhotoPath = $certificate['image'] ?? null;
 
         $path = $this->tempPhotos[$index]->store(
             'certificate',
@@ -221,9 +225,16 @@ class Certificate extends Component
                 'image' => $path,
             ]);
 
+        if ($oldPhotoPath && $oldPhotoPath !== $path) {
+            Storage::disk('public')->delete($oldPhotoPath);
+        }
+
+
         $this->certificates[$index]['image'] = $path;
 
         unset($this->tempPhotos[$index]);
+
+        session()->flash('message', 'Foto sertifikat berhasil diperbarui');
     }
 
 
@@ -260,6 +271,29 @@ class Certificate extends Component
     public function toggle2($index)
     {
         $this->show2[$index] = !($this->show2[$index] ?? false);
+    }
+
+    public function saveCertificate()
+    {
+        foreach ($this->certificates as $certificateData) {
+            if (isset($certificateData['id'])) {
+                CertificateData::where('id', $certificateData['id'])
+                    ->where('user_id', Auth::id())
+                    ->update([
+                        'title_id' => $certificateData['title_id'],
+                        'title_en' => $certificateData['title_en'],
+                        'description_id' => $certificateData['description_id'],
+                        'description_en' => $certificateData['description_en'],
+                        'issued_date' => $certificateData['issued_date'],
+                        'expiration_date' => $certificateData['expiration_date'],
+                        'credential_id' => $certificateData['credential_id'],
+                        'credential_url' => $certificateData['credential_url'],
+                        'issuer_id' => $certificateData['issuer_id'],
+                    ]);
+            }
+        }
+
+        session()->flash('message', 'Certificate berhasil disimpan!');
     }
 
     public function render()

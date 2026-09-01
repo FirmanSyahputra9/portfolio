@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use \Livewire\WithFileUploads;
+use Illuminate\Support\Facades\Storage;
 
 class Profile extends Component
 {
@@ -43,14 +44,24 @@ class Profile extends Component
 
         $user = User::with('heroData')->findOrFail(Auth::id());
 
+        $oldPhotoPath = $user->heroData->image ?? null;
+
+
         $path = $this->tempPhoto->store('profile', 'public');
 
         $user->heroData()->update([
             'image' => $path,
         ]);
 
+        if ($oldPhotoPath && $oldPhotoPath !== $path) {
+            Storage::disk('public')->delete($oldPhotoPath);
+        }
+
+
         $this->photo = $path;
         $this->tempPhoto = null;
+
+        session()->flash('message', 'Foto profil berhasil diperbarui');
     }
 
 

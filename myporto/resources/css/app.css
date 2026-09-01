@@ -4,6 +4,7 @@
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @import "@fortawesome/fontawesome-free/css/all.min.css";
 
+
 @theme {
     --color-background: #0B1120;
     --color-surface: #111827;

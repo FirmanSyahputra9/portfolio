@@ -1,37 +1,41 @@
-<form action="/api/experience" method="POST" class="admin-card bg-card/40 border border-border rounded-2xl p-6 mb-8">
+<form wire:submit.prevent="saveCertificate" method="POST"
+    class="admin-card bg-card/40 border border-border rounded-2xl p-6 mb-8">
     <x-form.save label="Certificate" name="Save Certificate" toggle :show="$show" />
     @if ($show)
         <div class="space-y-3 ml-10">
             @forelse ($certificates as $index => $certificate)
-                <div class="flex  gap-4 items-center">
-                    <div>
-                        <x-form.svg-toggle :show="$show2[$index] ?? false" :toggleFunc="'toggle2(' . $index . ')'" />
-                    </div>
-                    <div class="flex gap-4 flex-1 w-full">
-                        <!-- Nama Sertifikat -->
-                        <div class="space-y-2 flex-1 w-full">
-                            <x-form.input disabled labelClass="sr-only" label="Nama Sertifikat (ID) {{ $index + 1 }}"
-                                model="certificates.{{ $index }}.title_id" placeholder="Sertificate Name (ID)"
-                                :rules="$rules" name="certificates[{{ $index }}][title_id]" />
+                <div wire:key="certificate-{{ $certificate['id'] }}">
+                    <div class="flex  gap-4 items-center">
+                        <div>
+                            <x-form.svg-toggle :show="$show2[$index] ?? false" :toggleFunc="'toggle2(' . $index . ')'" />
                         </div>
-                        <div class="space-y-2 flex-1 w-full">
-                            <x-form.input disabled labelClass="sr-only" label="Issuer"
-                                model="certificates.{{ $index }}.issuer.name" placeholder="Issuer"
-                                :rules="$rules" :value="$certificate['issuer']['name']"
-                                name="certificates[{{ $index }}][issuer][name]" />
-                        </div>
-                        <div class="space-y-2 flex-1 w-full">
-                            <x-form.date disabled labelClass="sr-only" label="Tanggal Terbit {{ $index + 1 }}"
-                                model="certificates.{{ $index }}.issued_date" :rules="$rules"
-                                name="certificates[{{ $index }}][issued_date]" :max="now()->format('Y-m-d')"
-                                :min="'2010-01-01'" />
-                        </div>
-                        <div class="space-y-3 flex items-end">
-                            <x-form.button action="delete" :btnFunc="'removeCertificateButton(' . $index . ')'" label="Hapus" />
+                        <div class="flex gap-4 flex-1 w-full">
+
+                            <div class="space-y-2 flex-1 w-full">
+                                <x-form.input disabled labelClass="sr-only"
+                                    label="Nama Sertifikat (ID) {{ $index + 1 }}"
+                                    model="certificates.{{ $index }}.title_id"
+                                    placeholder="Sertificate Name (ID)" :rules="$rules"
+                                    name="certificates[{{ $index }}][title_id]" />
+                            </div>
+                            <div class="space-y-2 flex-1 w-full">
+                                <x-form.input disabled labelClass="sr-only" label="Issuer"
+                                    model="certificates.{{ $index }}.issuer.name" placeholder="Issuer"
+                                    :rules="$rules" :value="$certificate['issuer']['name']"
+                                    name="certificates[{{ $index }}][issuer][name]" />
+                            </div>
+                            <div class="space-y-2 flex-1 w-full">
+                                <x-form.date disabled labelClass="sr-only" label="Tanggal Terbit {{ $index + 1 }}"
+                                    model="certificates.{{ $index }}.issued_date" :rules="$rules"
+                                    name="certificates[{{ $index }}][issued_date]" :max="now()->format('Y-m-d')"
+                                    :min="'2010-01-01'" />
+                            </div>
+                            <div class="space-y-3 flex items-end">
+                                <x-form.button action="delete" :btnFunc="'removeCertificateButton(' . $index . ')'" label="Hapus" />
+                            </div>
                         </div>
                     </div>
                 </div>
-
 
                 @if ($show2[$index] ?? false)
                     <div class="repeater-item bg-surface/50 border border-border rounded-xl p-4 pl-5 transition-all">
@@ -44,7 +48,7 @@
                         </div>
                         <div class="grid md:grid-cols-2 gap-4">
 
-                            <!-- Nama Sertifikat -->
+
                             <div class="space-y-2">
                                 <x-form.input label="Nama Sertifikat (ID) {{ $index + 1 }}"
                                     model="certificates.{{ $index }}.title_id"
@@ -59,7 +63,7 @@
                             </div>
 
 
-                            <!-- Deskripsi Indonesia -->
+
                             <div class="md:col-span-2 space-y-2">
                                 <x-form.textarea model="certificates.{{ $index }}.description_id"
                                     label="Description (ID)" name="certificates[{{ $index }}][description_id]"
@@ -67,7 +71,7 @@
                                     placeholder="Certificate of completion for web application development using Laravel." />
                             </div>
 
-                            <!-- Deskripsi English -->
+
                             <div class="md:col-span-2 space-y-2">
                                 <x-form.textarea model="certificates.{{ $index }}.description_en"
                                     label="Description (EN)" name="certificates[{{ $index }}][description_en]"
@@ -104,7 +108,7 @@
                                     name="certificates[{{ $index }}][credential_url]" />
                             </div>
 
-                            <!-- Issuer -->
+
                             <div class="space-y-2">
                                 <x-form.input label="Issuer" model="certificates.{{ $index }}.issuer.name"
                                     placeholder="Issuer" :rules="$rules"
@@ -198,6 +202,8 @@
                             </div>
 
                         </div>
+
+                    </div>
                 @endif
             @empty
             @endforelse
@@ -212,7 +218,7 @@
 
                 </div>
                 <div class="flex gap-4 flex-1 w-full">
-                    <!-- Nama Sertifikat -->
+
                     <div class="space-y-2 flex-1 w-full">
                         <x-form.input labelClass="sr-only" label="add CertificateTitleId"
                             model="addCertificateTitleId" placeholder="Judul sertifikat" :rules="$rules"

@@ -1,7 +1,5 @@
-<section id="skills" class="section-anchor min-h-[calc(100vh-4rem)]">
-    <h2 class="text-2xl font-bold tracking-tight mb-6 flex items-center gap-3">
-        <span class="text-accent text-2xl">/</span> Skills
-    </h2>
+<section id="{{ __('skills') }}" class="section-anchor min-h-[calc(100vh-4rem)]">
+    <x-section-title title="skills" />
     <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
         @foreach ($skills as $category => $technologies)
             <div class="bg-card border border-border rounded-xl p-4 hover:border-accent/50 transition-colors">

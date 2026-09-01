@@ -16,9 +16,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-
-
-        // User::factory(10)->create();
         HeroButton::insert([
             [
                 'label_id' => 'Unduh CV',
@@ -28,22 +25,7 @@ class DatabaseSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
-            [
-                'label_id' => 'Lihat Skil Saya',
-                'label_en' => 'See My Skills',
-                'url' => '#skills',
-                'action' => 'link',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'label_id' => 'Lihat Proyek Saya',
-                'label_en' => 'See My Projects',
-                'url' => '#projects',
-                'action' => 'link',
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]
+
         ]);
 
 
@@ -69,7 +51,7 @@ class DatabaseSeeder extends Seeder
             IssuerSeeder::class,
             CategorySeeder::class,
             TechnologySeeder::class,
-            ProjectSeeder::class,
+            ProjectDataSeeder::class,
             ProjectDetailSeeder::class,
             AboutDataSeeder::class,
             ExperienceDataSeeder::class,
@@ -77,7 +59,9 @@ class DatabaseSeeder extends Seeder
             ContactDataSeeder::class,
             ContactDetailSeeder::class,
             CertificateDataSeeder::class,
-            CertificateDetailSeeder::class
+            CertificateDetailSeeder::class,
+            EducationDataSeeder::class,
+            EducationDetailSeeder::class
         ]);
     }
 }

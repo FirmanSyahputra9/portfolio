@@ -62,9 +62,9 @@ class User extends Authenticatable
         return $this->hasOne(HeroData::class);
     }
 
-    public function projects()
+    public function projectData()
     {
-        return $this->hasMany(Project::class);
+        return $this->hasMany(ProjectData::class);
     }
 
     public function aboutData()
@@ -85,5 +85,10 @@ class User extends Authenticatable
     public function certificateData()
     {
         return $this->hasMany(CertificateData::class);
+    }
+
+    public function educationData()
+    {
+        return $this->hasMany(EducationData::class);
     }
 }

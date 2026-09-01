@@ -53,7 +53,7 @@ class TechnologySeeder extends Seeder
             [
                 'name' => 'codeigniter',
                 'slug' => Str::slug('codeigniter'),
-                'icon' => 'fab fa-codeigniter',
+                'icon' => 'fa-brands fa-drupal',
             ],
             [
                 'name' => 'nodejs',
@@ -80,6 +80,16 @@ class TechnologySeeder extends Seeder
                 'slug' => Str::slug('docker'),
                 'icon' => 'fab fa-docker',
             ],
+            [
+                'name' => 'Html5',
+                'slug' => Str::slug('Html5'),
+                'icon' => 'fa-brands fa-html5',
+            ],
+            [
+                'name' => 'FFMPEG',
+                'slug' => Str::slug('FFMPEG'),
+                'icon' => 'fas fa-file-video',
+            ]
 
         ];
 
@@ -88,5 +98,3 @@ class TechnologySeeder extends Seeder
         }
     }
 }
-
-

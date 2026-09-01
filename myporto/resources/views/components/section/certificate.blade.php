@@ -1,16 +1,22 @@
-<section id="certificates" class="section-anchor min-h-[calc(100vh-4rem)]">
-    <h2 class="text-2xl font-bold tracking-tight mb-6 flex items-center gap-3">
-        <span class="text-accent text-2xl">/</span> Certificates
-    </h2>
+<section id="{{ __('certificates') }}" class="section-anchor min-h-[calc(100vh-4rem)]">
+    <x-section-title title="certificates" />
     <div class="space-y-6">
-        @forelse ($certificates as $certificate)
+        @forelse (
+                $showAllCertificates
+                    ? $certificates
+                    : collect($certificates)->take(2)
+                as $certificate
+            )
             <article class="bg-card/40 border border-border rounded-xl p-5 hover:bg-card/70 transition-colors">
-                <div class="flex flex-col sm:flex-row sm:items-start gap-2 sm:gap-6">
+                <div class="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6">
+                    <div class="w-40 shrink-0 flex flex-col items-center justify-center">
+                        <img src="{{ $certificate['issuer_logo'] }}" alt="{{ $certificate['issuer'] }}" loading="lazy"
+                            decoding="async" width="144" height="144" class="w-36 h-36 rounded-md object-cover">
 
-                    <span class="text-xs font-mono text-secondary-text/60 whitespace-nowrap">
-                        {{ $certificate['issued_date'] }}
-                    </span>
-
+                        <span class="mt-2 text-xs font-mono text-secondary-text/60 whitespace-nowrap text-center">
+                            {{ $certificate['issued_date'] }}
+                        </span>
+                    </div>
                     <div class="flex-1">
                         <div class="flex justify-between w-full">
 
@@ -46,4 +52,25 @@
         @empty
         @endforelse
     </div>
+    @if (count($certificates) > 2)
+        <div class="mt-8">
+            <button wire:click="toggleCertificates"
+                class="w-full inline-flex cursor-pointer items-center justify-center gap-2 px-6 py-2.5 rounded-full
+                       border border-accent/20 bg-accent/20
+                       text-accent font-medium text-sm
+                       hover:bg-accent/30 transition-all">
+                @if ($showAllCertificates)
+                    <span class="inline-block capitalize">
+                        {{ __('hide') }}
+                    </span>
+                    <i class="fas fa-chevron-up text-xs"></i>
+                @else
+                    <span class="inline-block capitalize">
+                        {{ __('show all') }}
+                    </span>
+                    <i class="fas fa-chevron-down text-xs"></i>
+                @endif
+            </button>
+        </div>
+    @endif
 </section>

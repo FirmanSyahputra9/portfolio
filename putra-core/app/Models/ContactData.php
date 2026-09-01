@@ -24,7 +24,7 @@ class ContactData extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function contactDetail()
+    public function contactDetails()
     {
         return $this->hasMany(ContactDetail::class, 'contact_id');
     }

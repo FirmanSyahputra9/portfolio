@@ -5,6 +5,7 @@
     'value' => '',
     'placeholder' => '',
     'rules' => [],
+    'rows' => null,
 ])
 @php
     preg_match('/max:(\d+)/', $rules[$model] ?? '', $matches);
@@ -15,7 +16,7 @@
 <div x-data="{ length: {{ strlen($value ?? '') }} }" class="relative">
     <textarea wire:model.live="{{ $model }}" name="{{ $name }}" maxlength="{{ $maxLength }}"
         x-on:input="length = $event.target.value.length"
-        class="w-full bg-surface border border-border rounded-lg  px-4 py-2.5 pr-20 text-sm text-primary-text outline-none"
+        class="w-full bg-surface border border-border rounded-lg  px-4 py-2.5 pr-20 text-sm text-primary-text outline-none" rows="{{ $rows }}"
         placeholder="{{ $placeholder }}">{{ $value }}</textarea>
 
     @if ($maxLength)

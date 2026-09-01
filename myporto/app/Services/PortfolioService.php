@@ -26,6 +26,7 @@ class PortfolioService
                 'experiences' => [],
                 'contact' => [],
                 'certificates' => [],
+                'educations' => [],
             ];
         }
 
@@ -34,7 +35,9 @@ class PortfolioService
         $hero = [
             'name' => $hero["name_{$locale}"],
             'role' => $hero["role_{$locale}"],
-            'image' => config('app.profile_photo_url') . $hero['image'] ?? '-',
+            'image' => !empty($hero['image'])
+                ? config('app.profile_photo_url') . $hero['image']
+                : null,
             'summary' => $hero["summary_{$locale}"],
             'role_description' => $hero["role_description_{$locale}"],
             'hero_buttons' => collect($hero['hero_buttons'])
@@ -48,13 +51,16 @@ class PortfolioService
         ];
 
 
-
+        // dd($data['projects']);
         $projects = collect($data['projects'])
             ->sortByDesc('created_at')
             ->map(function ($project) use ($locale) {
                 return [
                     'id' => $project['id'],
                     'title' => $project["title_{$locale}"],
+                    'start_date' => Carbon::parse($project['start_date'])->format('M Y'),
+                    'completed_at' => Carbon::parse($project['completed_at'])->format('M Y'),
+                    'image' => config('app.profile_photo_url') . $project['image'],
                     'created_at' => $project['created_at'],
                     'introduction' => $project["introduction_{$locale}"],
                     'demo' => $project['demo'],
@@ -71,6 +77,7 @@ class PortfolioService
             });
 
 
+
         $skills = collect($data['projects'])
             ->flatMap(fn($project) => $project['technologies'])
             ->concat(
@@ -80,6 +87,10 @@ class PortfolioService
             ->concat(
                 collect($data['certificates'])
                     ->flatMap(fn($certificate) => $certificate['technologies'])
+            )
+            ->concat(
+                collect($data['educations'])
+                    ->flatMap(fn($education) => $education['technologies'])
             )
             ->unique(fn($tech) => $tech['category'] . '-' . strtolower($tech['technology']))
             ->map(fn($tech) => [
@@ -101,6 +112,10 @@ class PortfolioService
             ->concat(
                 collect($data['certificates'])
                     ->flatMap(fn($certificate) => $certificate['technologies'])
+            )
+            ->concat(
+                collect($data['educations'])
+                    ->flatMap(fn($education) => $education['technologies'])
             )
             ->unique(fn($tech) => strtolower($tech['technology']))
             ->map(fn($tech) => [
@@ -127,8 +142,9 @@ class PortfolioService
                     'location' => $experience['location'],
                     'start_date' => Carbon::parse($experience['start_date'])->format('M Y'),
                     'end_date' => $experience['end_date'] ? Carbon::parse($experience['end_date'])->format('M Y') : 'Present',
-                    'image' => $experience['image'],
-
+                    'image' => !empty($experience['image'])
+                        ? config('app.profile_photo_url') . $experience['image']
+                        : null,
                     'technologies' => collect($experience['technologies'])
                         ->map(fn($detail) => [
                             'id' => $detail['id'],
@@ -151,7 +167,7 @@ class PortfolioService
         ];
 
         $certificates = $data['certificates'];
-        // dd($certificates);
+
         $certificates = collect($certificates)->sortBy('created_at')->map(function ($certificate) use ($locale) {
             return [
                 'id' => $certificate['id'],
@@ -163,12 +179,40 @@ class PortfolioService
                 'issuer_url' => $certificate['issuer_url'],
                 'issuer_logo' => $certificate['issuer_logo'],
                 'description' => $certificate["description_{$locale}"],
-                'image' => $certificate['image'],
+                'image' => !empty($certificate['image'])
+                    ? config('app.profile_photo_url') . $certificate['image']
+                    : null,
                 'issued_date' => Carbon::parse($certificate['issued_date'])->format('M Y'),
                 'expiration_date' => $certificate['expiration_date'] !== '-'
                     ? Carbon::parse($certificate['expiration_date'])->format('M Y')
                     : '-',
                 'technologies' => collect($certificate['technologies'])
+                    ->map(fn($detail) => [
+                        'id' => $detail['id'],
+                        'category' => $detail['category'],
+                        'technology' => $detail['technology'],
+                        'icon' => $detail['icon'],
+                    ])
+            ];
+        });
+
+        $educations = $data['educations'];
+        $educations = collect($educations)->sortBy('created_at')->map(function ($education) use ($locale) {
+            return [
+                'id' => $education['id'],
+                'institution' => $education["institution_{$locale}"],
+                'degree' => $education["degree"],
+                'field_of_study' => $education["field_of_study_{$locale}"],
+                'description' => $education["description_{$locale}"],
+                'final_grade' => $education['final_grade'],
+                'image' => !empty($education['image'])
+                    ? config('app.profile_photo_url') . $education['image']
+                    : null,
+                'start_date' => Carbon::parse($education['start_date'])->format('M Y'),
+                'end_date' => $education['end_date'] !== '-'
+                    ? Carbon::parse($education['end_date'])->format('M Y')
+                    : '-',
+                'technologies' => collect($education['technologies'])
                     ->map(fn($detail) => [
                         'id' => $detail['id'],
                         'category' => $detail['category'],
@@ -193,7 +237,8 @@ class PortfolioService
             'about' => $about,
             'experiences' => $experiences,
             'contacts' => $contacts,
-            'certificates' => $certificates
+            'certificates' => $certificates,
+            'educations' => $educations
         ];
     }
 }
