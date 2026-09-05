@@ -26,16 +26,29 @@ class Contact extends Component
     public $addContactIcon;
     public $addContactUrl;
 
-    protected $rules = [
+    protected $contactRules = [
         'contact_title_id' => 'required|string|max:255',
         'contact_title_en' => 'required|string|max:255',
         'contact_description_id' => 'nullable|string|max:5000',
         'contact_description_en' => 'nullable|string|max:5000',
+    ];
+
+    protected $contactDetailRules = [
         'addContactPlatform' => 'required|string|max:255',
         'addContactName' => 'required|string|max:255',
         'addContactIcon' => 'required|string|max:255',
-        'addContactUrl' => 'required|url|max:255',
+        'addContactUrl' => 'required|max:255',
     ];
+
+    private function validateContact()
+    {
+        return $this->validate($this->contactRules);
+    }
+
+    private function validateContactDetail()
+    {
+        return $this->validate($this->contactDetailRules);
+    }
 
     private function loadContact()
     {
@@ -62,14 +75,8 @@ class Contact extends Component
 
     public function addContactDetail()
     {
-        $this->validate([
-            'addContactPlatform' => 'required|string|max:255',
-            'addContactName' => 'required|string|max:255',
-            'addContactIcon' => 'required|string|max:255',
-            'addContactUrl' => 'required|url|max:255',
-        ]);
+        $this->validateContactDetail();
 
-        // Get or create contact data
         $contact = Auth::user()->contactData()->first();
 
         if (!$contact) {
@@ -82,16 +89,15 @@ class Contact extends Component
             ]);
         }
 
-        // Create contact detail
-        ContactDetail::create([
-            'contact_id' => $contact->id,
-            'platform' => $this->addContactPlatform,
-            'name' => $this->addContactName,
-            'icon' => $this->addContactIcon,
-            'url' => $this->addContactUrl,
-        ]);
+        ContactDetail::updateOrCreate(
+            ['contact_id' => $contact->id, 'platform' => $this->addContactPlatform],
+            [
+                'name' => $this->addContactName,
+                'icon' => $this->addContactIcon,
+                'url' => $this->addContactUrl,
+            ]
+        );
 
-        // Reset form
         $this->reset([
             'addContactPlatform',
             'addContactName',
@@ -122,16 +128,11 @@ class Contact extends Component
 
     public function saveContact()
     {
-        $this->validate([
-            'contact_title_id' => 'required|string|max:255',
-            'contact_title_en' => 'required|string|max:255',
-            'contact_description_id' => 'nullable|string|max:5000',
-            'contact_description_en' => 'nullable|string|max:5000',
-        ]);
+        $this->validateContact();
+
 
         $user = Auth::user();
 
-        // Update or create contact data
         $contact = $user->contactData()->updateOrCreate(
             ['user_id' => $user->id],
             [
@@ -164,7 +165,10 @@ class Contact extends Component
     public function render()
     {
         return view('livewire.section.contact', [
-            'rules' => $this->rules
+            'rules' => array_merge(
+                $this->contactRules,
+                $this->contactDetailRules
+            ),
         ]);
     }
 }
