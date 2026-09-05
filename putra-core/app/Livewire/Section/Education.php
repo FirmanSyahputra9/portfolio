@@ -106,30 +106,29 @@ class Education extends Component
             return;
         }
 
-        // Cari atau buat Technology
+
         $technology = Technology::firstOrCreate(
             ['name' => $technologyName],
             ['slug' => Str::slug($technologyName)]
         );
 
-        // Cari atau buat Category
+
         $category = Category::firstOrCreate(
             ['name' => $categoryName],
             ['slug' => Str::slug($categoryName)]
         );
 
-        // Buat relasi education dengan technology + category
         EducationDetail::create([
             'education_id' => $this->educations[$index]['id'],
             'technology_id' => $technology->id,
             'category_id' => $category->id,
         ]);
 
-        // Kosongkan input
+
         $this->technologyInputs[$index] = '';
         $this->categoryInputs[$index] = '';
 
-        // Reload data
+
         $this->loadEducations();
     }
 
@@ -149,7 +148,7 @@ class Education extends Component
     public function addEducationButton()
     {
         $this->validate();
-    
+
         $education = EducationData::create([
             'user_id' => Auth::id(),
             'institution_id' => $this->addEducationInstitutionId,
@@ -242,10 +241,9 @@ class Education extends Component
 
     public function updatedEducations($value, $key)
     {
-        // Optional: Auto-update end_date if needed
         if (str_ends_with($key, '.start_date')) {
             $index = explode('.', $key)[0];
-            // You can add logic here if needed
+
         }
     }
 

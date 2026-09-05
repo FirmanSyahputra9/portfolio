@@ -19,11 +19,27 @@ class Technology extends Model
 
     public function projects()
     {
-        return $this->belongsToMany(Project::class);
+        return $this->hasMany(Project::class);
     }
 
     public function projectDetails()
     {
-        return $this->belongsToMany(ProjectDetail::class);
+        return $this->hasMany(ProjectDetail::class);
     }
+
+    public function experienceDetails()
+    {
+        return $this->hasMany(ExperienceDetail::class);
+    }
+
+    public function certificateDetails()
+    {
+        return $this->hasMany(CertificateDetail::class);
+    }
+
+    public function educationDetails()
+    {
+        return $this->hasMany(EducationDetail::class);
+    }
+
 }

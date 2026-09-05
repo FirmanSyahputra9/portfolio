@@ -20,4 +20,20 @@ class Category extends Model
     {
         return $this->hasMany(ProjectDetail::class);
     }
+
+
+    public function experienceDetails()
+    {
+        return $this->hasMany(ExperienceDetail::class);
+    }
+
+    public function certificateDetails()
+    {
+        return $this->hasMany(CertificateDetail::class);
+    }
+
+    public function educationDetails()
+    {
+        return $this->hasMany(EducationDetail::class);
+    }
 }
