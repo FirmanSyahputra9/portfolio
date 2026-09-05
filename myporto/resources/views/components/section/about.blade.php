@@ -12,7 +12,7 @@
             @endforeach
         </div>
         <div>
-            <p class="text-sm font-medium text-secondary-text/80 mb-3">Technologies I work with</p>
+            <p class="text-sm font-medium text-secondary-text/80 mb-3">{{ __("Technologies I work with") }}</p>
             <div class="grid grid-cols-2 sm:grid-cols-2 gap-2.5">
                 @forelse ($technologies as $technology)
                     <span

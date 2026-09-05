@@ -5,10 +5,18 @@
             <div class="flex flex-col md:flex-row">
 
                 <div class="md:w-2/5 bg-surface/70 p-4 shrink-0 flex flex-col items-center justify-center">
-                    <img src="{{ $featuredProject['image'] ?? 'https://placehold.co/600x400/172033/38BDF8?text=' . ($featuredProject['title'] ?? 'Project') }}"
-                        alt="{{ $featuredProject['title'] ?? 'Project' }}"
-                        class="w-full h-auto rounded-xl object-cover border border-border/50" loading="lazy"
-                        width="600" height="400" />
+                    <div class="w-full h-full overflow-hidden rounded-xl border border-border/50">
+                        @if (!empty($featuredProject['demo']))
+                            <iframe src="{{ $featuredProject['demo'] }}"
+                                title="{{ $featuredProject['title'] ?? 'Project Demo' }}" class="w-full h-full border-0"
+                                loading="lazy" allowfullscreen>
+                            </iframe>
+                        @else
+                            <img src="{{ $featuredProject['image'] ?? 'https://placehold.co/600x400/172033/38BDF8?text=' . ($featuredProject['title'] ?? 'Project') }}"
+                                alt="{{ $featuredProject['title'] ?? 'Project' }}" class="w-full h-full object-cover"
+                                loading="lazy" width="600" height="400" />
+                        @endif
+                    </div>
 
                     <span
                         class="mt-2 text-xs font-mono text-secondary-text/60 whitespace-nowrap text-center capitalize">
@@ -60,18 +68,26 @@
                         class="bg-card border border-border rounded-xl p-5 card-hover flex flex-col
                            flex-none w-[85%] sm:w-[60%] lg:w-[40%] snap-start">
 
-                        <div
-                            class="bg-surface/50 rounded-lg p-3 mb-4 border border-border/40 flex flex-col items-center justify-center">
-                            <img src="{{ $project['image'] ?? 'https://placehold.co/600x400/172033/38BDF8?text=' . ($project['title'] ?? 'Project') }}"
-                                alt="{{ $project['title'] ?? 'Project' }}"
-                                class="w-full h-auto rounded-xl object-cover border border-border/50" loading="lazy"
-                                width="600" height="400" />
+                        <div class="bg-surface/70 p-4 shrink-0 flex flex-col items-center justify-center">
+                            <div class="w-full h-44 overflow-hidden rounded-xl border border-border/50 mb-2">
+                                @if (!empty($project['demo']))
+                                    <iframe src="{{ $project['demo'] }}"
+                                        title="{{ $project['title'] ?? 'Project Demo' }}"
+                                        class="w-full h-full border-0" loading="lazy" allowfullscreen>
+                                    </iframe>
+                                @else
+                                    <img src="{{ $project['image'] ?? 'https://placehold.co/600x400/172033/38BDF8?text=' . ($project['title'] ?? 'Project') }}"
+                                        alt="{{ $project['title'] ?? 'Project' }}" class="w-full h-full object-cover"
+                                        loading="lazy" width="600" height="400" />
+                                @endif
+                            </div>
 
                             <span
-                                class="mt-2 text-xs font-mono text-secondary-text/60 whitespace-nowrap text-center capitalize">
+                                class="block mt-1 mb-3 text-xs font-mono text-secondary-text/60 whitespace-nowrap text-center capitalize">
                                 {{ $project['start_date'] }} -
                                 {{ $project['start_date'] && $project['completed_at'] ? $project['completed_at'] : __('present') }}
                             </span>
+
                         </div>
 
                         <h4 class="font-semibold text-base">
