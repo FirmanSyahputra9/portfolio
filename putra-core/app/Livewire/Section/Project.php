@@ -100,30 +100,25 @@ class Project extends Component
             return;
         }
 
-        // Cari atau buat Technology
         $technology = Technology::firstOrCreate(
             ['name' => $technologyName],
             ['slug' => Str::slug($technologyName)]
         );
 
-        // Cari atau buat Category
         $category = Category::firstOrCreate(
             ['name' => $categoryName],
             ['slug' => Str::slug($categoryName)]
         );
 
-        // Buat relasi project dengan technology + category
         ProjectDetail::create([
             'project_id' => $this->projects[$index]['id'],
             'technology_id' => $technology->id,
             'category_id' => $category->id,
         ]);
 
-        // Kosongkan input
         $this->technologyInputs[$index] = '';
         $this->categoryInputs[$index] = '';
 
-        // Reload data
         $this->loadProjects();
     }
 

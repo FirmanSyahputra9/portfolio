@@ -67,7 +67,6 @@ class Certificate extends Component
             ])
             ->get()
             ->toArray();
-        // dd($this->certificates);
     }
 
     public function getTechnologies($index)
@@ -97,7 +96,6 @@ class Certificate extends Component
             return;
         }
 
-        // Cari atau buat Technology
         $technology = Technology::firstOrCreate(
             [
                 'name' => $technologyName,
@@ -107,7 +105,6 @@ class Certificate extends Component
             ]
         );
 
-        // Cari atau buat Category
         $category = Category::firstOrCreate(
             [
                 'name' => $categoryName,
@@ -117,18 +114,15 @@ class Certificate extends Component
             ]
         );
 
-        // Buat relasi certificate dengan technology + category
         CertificateDetail::create([
             'certificate_id' => $this->certificates[$index]['id'],
             'technology_id' => $technology->id,
             'category_id' => $category->id,
         ]);
 
-        // Kosongkan input
         $this->technologyInputs[$index] = '';
         $this->categoryInputs[$index] = '';
 
-        // Reload data
         $this->loadCertificates();
     }
     public function removeTechnology($certificateIndex, $detailIndex)

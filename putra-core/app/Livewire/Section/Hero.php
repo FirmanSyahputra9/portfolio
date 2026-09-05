@@ -31,7 +31,7 @@ class Hero extends Component
         'role_description_en' => 'required:string|max:5000',
     ];
 
-    public function toggle() 
+    public function toggle()
     {
         $this->show = !$this->show;
     }
@@ -58,9 +58,8 @@ class Hero extends Component
         $this->validate();
         $user = Auth::user();
 
-        // 1. Update atau create HeroData
         $heroData = $user->heroData()->updateOrCreate(
-            ['user_id' => $user->id], // Condition
+            ['user_id' => $user->id],
             [
                 'name_id' => $this->name_id,
                 'name_en' => $this->name_en,

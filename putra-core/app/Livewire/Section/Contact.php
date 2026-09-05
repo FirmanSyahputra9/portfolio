@@ -13,14 +13,12 @@ class Contact extends Component
     public $show = false;
     public $show2 = [];
 
-    // Contact main data
     public $contact_title_id;
     public $contact_title_en;
     public $contact_description_id;
     public $contact_description_en;
     public $contactDetails = [];
 
-    // Add new contact detail
     public $addContactPlatform;
     public $addContactName;
     public $addContactIcon;

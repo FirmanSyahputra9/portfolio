@@ -37,9 +37,8 @@ class About extends Component
 
         $user = Auth::user();
 
-        // Update atau create AboutData
         $user->aboutData()->updateOrCreate(
-            ['user_id' => $user->id], // Condition
+            ['user_id' => $user->id],
             [
                 'about_description_id' => $this->about_description_id,
                 'about_description_en' => $this->about_description_en,

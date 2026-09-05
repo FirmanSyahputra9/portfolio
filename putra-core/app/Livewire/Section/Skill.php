@@ -9,27 +9,22 @@ use Illuminate\Support\Str;
 
 class Skill extends Component
 {
-    // Toggle states
     public $show = false;
     public $showTechnologyForm = false;
     public $showCategoryForm = false;
 
-    // Technology properties
     public $technologies = [];
     public $editTechnologyId = null;
     public $editTechnologyName = '';
     public $editTechnologyIcon = '';
 
-    // Category properties
     public $categories = [];
     public $editCategoryId = null;
     public $editCategoryName = '';
 
-    // Add new technology
     public $newTechnologyName = '';
     public $newTechnologyIcon = '';
 
-    // Add new category
     public $newCategoryName = '';
 
     protected $rules = [
@@ -54,7 +49,6 @@ class Skill extends Component
             ->toArray();
     }
 
-    // ========== TECHNOLOGY CRUD ==========
 
     public function addTechnology()
     {
@@ -106,7 +100,6 @@ class Skill extends Component
     {
         $technology = Technology::findOrFail($id);
 
-        // Check if technology is used in any details
         $usedInProjects = $technology->projectDetails()->exists();
         $usedInExperiences = $technology->experienceDetails()->exists();
         $usedInCertificates = $technology->certificateDetails()->exists();
@@ -126,8 +119,6 @@ class Skill extends Component
     {
         $this->reset(['editTechnologyId', 'editTechnologyName', 'editTechnologyIcon', 'showTechnologyForm']);
     }
-
-    // ========== CATEGORY CRUD ==========
 
     public function addCategory()
     {
@@ -174,7 +165,6 @@ class Skill extends Component
     {
         $category = Category::findOrFail($id);
 
-        // Check if category is used in any details
         $usedInProjects = $category->projectDetails()->exists();
         $usedInExperiences = $category->experienceDetails()->exists();
         $usedInCertificates = $category->certificateDetails()->exists();
@@ -195,7 +185,6 @@ class Skill extends Component
         $this->reset(['editCategoryId', 'editCategoryName', 'showCategoryForm']);
     }
 
-    // ========== TOGGLE FUNCTIONS ==========
 
     public function toggle()
     {
